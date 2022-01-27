@@ -14,7 +14,7 @@
 #define pll pair<long long, long long>
 #define maxHeap priority_queue<ll>
 #define minHeap priority_queue<ll,vector<ll>,greater<ll>>
-#define mod 1000000007
+// #define mod 1e9+7
 #define inf 1000000000000000001;
 #define be(c) c.begin(),c.end()
 #define mp(x,y) make_pair(x,y)
@@ -39,39 +39,7 @@ void debugVector(vector<ll> &v){cout<<endl<<" Debug vector: ";for(auto x: v) cou
 bool isPrime(ll n){if(n<=1)return false;if(n<=3)return true;if(n%2==0||n%3==0)return false;for(ll i=5;i*i<=n;i=i+6)if(n%i==0||n%(i+2)==0)return false;return true;}
 bool isPowerOfTwo(ll n){if(n==0)return false;return (ceil(log2(n)) == floor(log2(n)));}
 
-/*
-// Top Down -> This is causing RUNTIME Error here bcoz of Stackoverflow
-ll coinCombinationsII(ll i, vector<ll> &c, ll x, vector<vector<ll>> &dp){
-    if(i == -1) return 0;
-    if(x == 0) return 1;
-    if(dp[i][x] != -1) return dp[i][x];
-    ll take = 0;
-    if(c[i] <= x)
-        take = coinCombinationsII(i, c, x-c[i], dp);
-    ll notTake = coinCombinationsII(i-1,c,x,dp);
-    return dp[i][x] = take+notTake; 
-}
-*/
 
-// Bottom UP
-ll coinCombinationsII(vector<ll> &c, ll x){
-    ll n = c.size();
-    ll dp[n+1][x+1];
- 
-    for(ll i=1;i<= n;i++){
-        for(ll sum=0;sum<=x;sum++){
-            if(sum == 0)
-                dp[i][sum] = 1;
-            else{
-                ll op1 = (c[i] > sum) ? 0 : dp[i][sum - c[i]];
-                ll op2 = (i == 1) ? 0 : dp[i-1][sum];
-                dp[i][sum] = (op1 + op2) % mod;
-            }
-        }
-    }
-
-    return dp[n][x];
-}
 
 int main() {
 #ifndef ONLINE_JUDGE
@@ -79,14 +47,24 @@ int main() {
     freopen("output.txt", "w", stdout);
 #endif
 GAURAV_CHAUDHARY
+    
+    int mod = 1e9+7;
+    int n,target; cin>>n>>target;
+    vector<int> c(n);
+    for(int&v : c) cin>>v;
 
-    ll n,x; cin>>n>>x;
-    vector<ll> c(n+1);
-    for(ll i=1;i<=n;i++) cin>>c[i];
-    // vector<vector<ll>> dp(n+1,vector<ll>(x+1,-1));
-    // cout<<coinCombinationsII(n-1,c,x,dp); // Runtime Error
-    cout<<coinCombinationsII(c,x);
-
+    vector<vector<int>> dp(n+1,vector<int>(target+1,0));
+    dp[0][0] = 1;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 0; j <= target; j++) {
+            dp[i][j] = dp[i-1][j];
+            int left = j-c[i-1];
+            if (left >= 0) {
+                (dp[i][j] += dp[i][left]) %= mod;
+           }
+        }
+    }
+    cout<<dp[n][target]<<endl;
     return 0;
 }
 
