@@ -53,7 +53,7 @@ ll coinCombinationsII(ll i, vector<ll> &c, ll x, vector<vector<ll>> &dp){
 }
 */
 
-// Bottom Up
+// Bottom UP
 ll coinCombinationsII(vector<ll> &c, ll x){
     ll n = c.size();
     ll dp[n+1][x+1];
