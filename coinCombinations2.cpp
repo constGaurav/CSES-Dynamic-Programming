@@ -41,20 +41,20 @@ bool isPowerOfTwo(ll n){if(n==0)return false;return (ceil(log2(n)) == floor(log2
 
 /*
 // Top Down -> This is causing RUNTIME Error here bcoz of Stackoverflow
-ll coinCombinationsI(ll i, vector<ll> &c, ll x, vector<vector<ll>> &dp){
+ll coinCombinationsII(ll i, vector<ll> &c, ll x, vector<vector<ll>> &dp){
     if(i == -1) return 0;
     if(x == 0) return 1;
     if(dp[i][x] != -1) return dp[i][x];
     ll take = 0;
     if(c[i] <= x)
-        take = coinCombinationsI(i, c, x-c[i], dp);
-    ll notTake = coinCombinationsI(i-1,c,x,dp);
+        take = coinCombinationsII(i, c, x-c[i], dp);
+    ll notTake = coinCombinationsII(i-1,c,x,dp);
     return dp[i][x] = take+notTake; 
 }
 */
 
 // Bottom Up
-ll coinCombinationsI(vector<ll> &c, ll x){
+ll coinCombinationsII(vector<ll> &c, ll x){
     ll n = c.size();
     ll dp[n+1][x+1];
  
@@ -84,8 +84,8 @@ GAURAV_CHAUDHARY
     vector<ll> c(n+1);
     for(ll i=1;i<=n;i++) cin>>c[i];
     // vector<vector<ll>> dp(n+1,vector<ll>(x+1,-1));
-    // cout<<coinCombinationsI(n-1,c,x,dp); // Runtime Error
-    cout<<coinCombinationsI(c,x);
+    // cout<<coinCombinationsII(n-1,c,x,dp); // Runtime Error
+    cout<<coinCombinationsII(c,x);
 
     return 0;
 }
